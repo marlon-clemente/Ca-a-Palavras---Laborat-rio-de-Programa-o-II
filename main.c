@@ -1,6 +1,6 @@
 /*
   Marlon Clemente Soares
-  https://github.com/marlon-clemente/LabII
+  https://github.com/marlon-clemente/Ca-a-Palavras---Laborat-rio-de-Programa-o-II
 */
 
 #include <stdio.h>
@@ -17,6 +17,5 @@ int main(int argc, char const *argv[]){
   grid = allocate_grid(size.row, size.column);
   grid = grid_generator(size.row, size.column, grid);
 
-  word_search(size, grid);
-     
+  run_game(size, grid);
 }

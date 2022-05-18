@@ -20,16 +20,18 @@ void show_grid (int row, int column, char **grid);
 
 char *string_generator();
 
-void word_search(Dimension dimension, char **grid);
-
 void message_success (char *direction, Dimension dimStart, Dimension dimEnd);
 
-void search_direct_horizontal (Dimension dimension, char **grid, char word[15]);
+void run_game(Dimension dimension, char **grid);
 
-void search_reverse_horizontal (Dimension dimension, char **grid, char word[15]);
+bool word_search(Dimension dimension, char **grid, char word[15]);
 
-void search_direct_vertical (Dimension dim, char **grid, char word[15]);
+bool search_direct_horizontal (Dimension dimension, char **grid, char word[15]);
 
-void search_reverse_vertical (Dimension dim, char **grid, char word[15]);
+bool search_reverse_horizontal (Dimension dimension, char **grid, char word[15]);
 
-void search_direct_diagonal (Dimension dim, char **grid, char word[15]);
+bool search_direct_vertical (Dimension dim, char **grid, char word[15]);
+
+bool search_reverse_vertical (Dimension dim, char **grid, char word[15]);
+
+bool search_direct_diagonal (Dimension dim, char **grid, char word[15]);

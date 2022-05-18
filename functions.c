@@ -38,39 +38,114 @@ char **grid_generator (int row, int column, char **grid){
       strcpy(&grid[i][j], string_generator());
     }
   }
-  show_grid(row, column, grid);
   return(grid);
 }
 
 char *string_generator(){
-  static char c[] = "ABCDEFGHIJLMNOPQRSTUVXZ";
+  static char c[] = "ABCDEFGHIJLMNOPQRSTUVZ";
   char *randon_char = NULL;
   int key = rand() % (int)(sizeof(c) -1);
   
   return (&c[key]);
 }
 
-void word_search(Dimension dimension, char **grid){
+
+void run_game(Dimension dimension, char **grid){
   char word[15];
+  
+  bool isFoundWord;
 
-  printf("\nDigite (em maiusculo) qual palavra voce encontrou:\n");
-  scanf("%s", &word);
+  bool isRun = true;
 
-  printf("Buscando por %s...\n\n", word);
+  int isContinue;
 
-  search_direct_diagonal(dimension, grid, word);
+  while (isRun){
+
+    show_grid(dimension.row, dimension.column, grid);
+
+    printf("\nDigite EM MAIUSCULO qual palavra voce encontrou\n\n");
+    scanf("%s", &word);
+
+    isFoundWord = word_search(dimension, grid, word);
 
 
-  search_reverse_vertical(dimension, grid, word);
+/*
 
-  search_direct_horizontal(dimension, grid, word);
-  search_reverse_horizontal(dimension, grid, word);
+    PARA TESTAR DE FORMA UNITARIA
 
-  search_direct_vertical(dimension, grid, word);
+    isFoundWord = search_direct_horizontal(dimension, grid, word);
+    isFoundWord = search_reverse_horizontal(dimension, grid, word);
+    isFoundWord = search_direct_vertical(dimension, grid, word);
+    isFoundWord = search_reverse_vertical(dimension, grid, word);
+    isFoundWord = search_direct_diagonal(dimension, grid, word);
+
+*/
+
+
+    if (isFoundWord){
+      printf("\n:)   Encontramos, deseja procurar outra?\n\n");
+    } else {
+      printf("\n:(   Nao encontramos a palavra\n\nDeseja tentar novamente?\n");
+    }
+    printf("[1] SIM\n");
+    printf("[2] NAO\n");
+    scanf("%d", &isContinue);
+    
+    if (isContinue == 1) isRun = true; else isRun = false;
+  }
+
+  return;
+}
+
+
+
+bool word_search(Dimension dimension, char **grid, char word[15]){
+  bool firstSearch = false,
+       secondSearch = false,
+       thirdSearch = false,
+       fourthSearch = false,
+       fifthSearch = false;
+
+  firstSearch = search_direct_horizontal(dimension, grid, word);
+  
+  if (fifthSearch == true){
+    return true;
+  } else {
+    secondSearch = search_reverse_horizontal(dimension, grid, word);
+    if (secondSearch  == true){
+      return true;
+    } else {
+      thirdSearch = search_direct_vertical(dimension, grid, word);
+      if (thirdSearch  == true){
+        return true;
+      } else {
+        fourthSearch = search_reverse_vertical(dimension, grid, word);
+        if (fourthSearch  == true){
+          return true;
+        } else {
+          fifthSearch = search_direct_diagonal(dimension, grid, word);
+          if (fifthSearch  == true){
+            return true;
+          } else return false;
+        }
+      }
+    }
+  }
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  return false;
   
 }
 
-void search_direct_horizontal (Dimension dim, char **grid, char word[15]){
+bool search_direct_horizontal (Dimension dim, char **grid, char word[15]){
 
   int columnCopy;
 
@@ -104,12 +179,13 @@ void search_direct_horizontal (Dimension dim, char **grid, char word[15]){
     }
   }
   
-  if (wordExists) message_success("HORIZINTAL DIRETA", coordinatesStart, coordinatesEnd);
-  
-  return;
+  if (wordExists) {
+    message_success("HORIZINTAL DIRETA", coordinatesStart, coordinatesEnd);
+    return true;
+  } else return false;
 }
 
-void search_reverse_horizontal (Dimension dim, char **grid, char word[15]){
+bool search_reverse_horizontal (Dimension dim, char **grid, char word[15]){
 
   int columnCopy;
   bool wordExists;
@@ -140,12 +216,13 @@ void search_reverse_horizontal (Dimension dim, char **grid, char word[15]){
     }
   }
   
-  if (wordExists) message_success("HORIZONTAL REVERSA", coordinatesStart, coordinatesEnd);
-  
-  return;
+  if (wordExists){
+    message_success("HORIZONTAL REVERSA", coordinatesStart, coordinatesEnd);
+    return true;
+  } else return false;
 }
 
-void search_direct_vertical (Dimension dim, char **grid, char word[15]){
+bool search_direct_vertical (Dimension dim, char **grid, char word[15]){
   int rowCopy;
   bool wordExists;
 
@@ -175,12 +252,13 @@ void search_direct_vertical (Dimension dim, char **grid, char word[15]){
     }
   }
   
-  if (wordExists) message_success("VERTICAL DIRETA", coordinatesStart, coordinatesEnd);
-  
-  return;
+  if (wordExists) {
+    message_success("VERTICAL DIRETA", coordinatesStart, coordinatesEnd);
+    return true;
+  } else return false;
 }
 
-void search_reverse_vertical (Dimension dim, char **grid, char word[15]){
+bool search_reverse_vertical (Dimension dim, char **grid, char word[15]){
 
   int rowCopy;
   bool wordExists;
@@ -213,12 +291,13 @@ void search_reverse_vertical (Dimension dim, char **grid, char word[15]){
     }
   }
   
-  if (wordExists) message_success("VERTICAL REVERSA", coordinatesStart, coordinatesEnd);
-  
-  return;
+  if (wordExists){
+    message_success("VERTICAL REVERSA", coordinatesStart, coordinatesEnd);
+    return true;
+  } else return false;
 }
 
-void search_direct_diagonal (Dimension dim, char **grid, char word[15]){
+bool search_direct_diagonal (Dimension dim, char **grid, char word[15]){
 
   int rowCopy, columnCopy;
   bool wordExists;
@@ -253,13 +332,13 @@ void search_direct_diagonal (Dimension dim, char **grid, char word[15]){
     }
   }
   
-  if (wordExists) message_success("DIAGONAL DIRETA", coordinatesStart, coordinatesEnd);
-  
-  return;
+  if (wordExists) {
+    message_success("DIAGONAL DIRETA", coordinatesStart, coordinatesEnd);
+    return true;
+  } else return false;
 }
 
 void show_grid (int row, int column, char **grid){
-  printf("__________ CACA PALAVRAS __________\n");
   printf("      ");
   for (int i = 0; i < column; i++){
     i <= 9 ? printf("| %d", i) : printf("|%d", i) ;
@@ -275,5 +354,5 @@ void show_grid (int row, int column, char **grid){
 }
 
 void message_success (char *direction, Dimension dimStart, Dimension dimEnd){
-  printf("Palavra encontrada na %s!\nIniciando na posicao [%d][%d]\nFinalizando na posicao[%d][%d]\n\n", direction, dimStart.row, dimStart.column, dimEnd.row, dimEnd.column);
+  printf("\nPalavra encontrada na %s!\n>Iniciando na posicao [%d][%d]\n>Finalizando na posicao[%d][%d]\n\n", direction, dimStart.row, dimStart.column, dimEnd.row, dimEnd.column);
 }
